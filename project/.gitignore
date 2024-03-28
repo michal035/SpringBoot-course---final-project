@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# config files
+project/src/main/resources/application.properties
+/home/michal/Documents/final_backend/project/src/main/resources/application.properties
+
+*properties

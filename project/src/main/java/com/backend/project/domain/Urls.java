@@ -19,6 +19,13 @@ public class Urls {
     private String domain;
     private String shortUrl;
 
+    public Urls(String domain, String originalUrl, String shortUrl){
+        this.originalUrl = originalUrl;
+        this.domain = domain;
+        this.shortUrl = shortUrl;
+    }
+
+
     public Long getId() {
         return id;
     }

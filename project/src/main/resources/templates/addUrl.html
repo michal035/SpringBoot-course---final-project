@@ -7,10 +7,10 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
         <div id="from">
-            <form action="/new" method="post">
-                <label for="url">Title:</label>
-                <input type="text" id="url" name="url" required><br>
-                <button type="submit">Get short url</button>
+            <form th:action="@{/new}" method="post">
+                <label for="url">Title:</label><br>
+                <input type="text" id="url" name="url" required><br><br>
+                <button type="submit">Get short URL</button>
             </form>
         </div>
     </body>

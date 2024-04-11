@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
+import com.backend.project.util.shortUrl;
 import com.backend.project.domain.Urls;
 import com.backend.project.domain.UrlsRepository;
 
@@ -43,8 +44,24 @@ public class projectController {
     @ResponseBody
     public String newBook(@RequestParam("url") String url, Model model) {
       model.addAttribute("url", url);
-      return url;
+      
+      String shortUrl_;
+      String domain;
+
+      try {
+        shortUrl_ = shortUrl.getShortUrl();
+        domain = (url.split("//")[1]).split("/")[0];
+      }catch(Exception e){
+        return "Please provide full url";
+      }
+        
+        Urls newUrl = new Urls(domain,url,shortUrl_);
+        repository.save(newUrl);
+
+        return shortUrl_;
+
     } 
+
 
 
   @GetMapping("/")

@@ -4,15 +4,19 @@ import java.util.Random;
 
 
 public class shortUrl {
-    public static String getShortUrl() {
+    public static String[] getShortUrl() {
 
         int length = 5;
         String serverName = "http://localhost:8080/";
 
-        String shortUrl = generateRandomString(length);
-        shortUrl = serverName + shortUrl;
+        String shortUrlCode = generateRandomString(length);
+        String shortUrl = serverName + shortUrlCode;
 
-        return shortUrl;
+        String[] data = new String[2];
+        data[0] = shortUrl;
+        data[1] = shortUrlCode;
+
+        return data;
     }
 
 

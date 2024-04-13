@@ -18,13 +18,24 @@ public class Urls {
     private String originalUrl;
     private String domain;
     private String shortUrl;
+    private String shortUrlCode;
 
-    public Urls(String domain, String originalUrl, String shortUrl){
+    public Urls(){}
+
+    public Urls(String domain, String originalUrl, String shortUrl, String shortUrlCode){
         this.originalUrl = originalUrl;
         this.domain = domain;
         this.shortUrl = shortUrl;
+        this.shortUrlCode = shortUrlCode;
     }
 
+    public void setShortUrlCode(String code){
+        this.shortUrlCode = code;
+    }
+
+    public String getShortUrlCode(){
+        return this.shortUrlCode;
+    }
 
     public Long getId() {
         return id;

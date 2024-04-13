@@ -1,6 +1,10 @@
 package com.backend.project.web;
 
+import java.lang.reflect.Array;
 import java.util.Map;
+import java.util.Optional;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
+
 import com.backend.project.util.shortUrl;
 import com.backend.project.domain.Urls;
 import com.backend.project.domain.UrlsRepository;
@@ -45,20 +50,20 @@ public class projectController {
     public String newBook(@RequestParam("url") String url, Model model) {
       model.addAttribute("url", url);
       
-      String shortUrl_;
+      String[] data_shortUrl;
       String domain;
 
       try {
-        shortUrl_ = shortUrl.getShortUrl();
+        data_shortUrl = shortUrl.getShortUrl();
         domain = (url.split("//")[1]).split("/")[0];
       }catch(Exception e){
         return "Please provide full url";
       }
         
-        Urls newUrl = new Urls(domain,url,shortUrl_);
+        Urls newUrl = new Urls(domain,url,data_shortUrl[0],data_shortUrl[1]);
         repository.save(newUrl);
 
-        return shortUrl_;
+        return data_shortUrl[0];
 
     } 
 
@@ -78,10 +83,16 @@ public class projectController {
   @GetMapping("/{shorturl}")
   public RedirectView handleCommand(@PathVariable("shorturl") String shorturl,
                               @RequestParam Map<String, String> params) {
-  
-      //return "Endpoint: " + shorturl;
-      return new RedirectView("http://www.google.com");
-  }
 
+      System.out.println(shorturl);
+      List<Urls> urls = repository.findByShortUrlCode(shorturl);
+      if (!urls.isEmpty()) {
+          Urls url = urls.get(0); 
+          return new RedirectView(url.getOriginalUrl());
+      } else {
+        return new RedirectView("http://localhost:8080/login");
+      }
+  }
 }
+
 

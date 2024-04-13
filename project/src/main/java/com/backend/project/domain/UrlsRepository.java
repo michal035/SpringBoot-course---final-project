@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface UrlsRepository extends CrudRepository<Urls, Long>{
-    List<Urls> findByOriginalUrl(String originalUrl);
+    List<Urls> findByShortUrlCode(String originalUrl);
 }

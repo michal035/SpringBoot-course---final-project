@@ -39,9 +39,9 @@ public class projectController {
     }
 
 
-  @GetMapping("/add")
+  @GetMapping("/index")
     public ModelAndView addUrl() {
-        return new ModelAndView("addUrl");
+        return new ModelAndView("index");
     }
     
 

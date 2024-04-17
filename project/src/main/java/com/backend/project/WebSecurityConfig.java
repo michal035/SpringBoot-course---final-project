@@ -26,9 +26,9 @@ public class WebSecurityConfig {
 		MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 		return http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-				.requestMatchers(mvcMatcherBuilder.pattern("/css/**"), mvcMatcherBuilder.pattern("/signup"), mvcMatcherBuilder.pattern("/saveuser")).permitAll()
+				.requestMatchers(mvcMatcherBuilder.pattern("/css/**"), mvcMatcherBuilder.pattern("/signup"), mvcMatcherBuilder.pattern("/index"), mvcMatcherBuilder.pattern("/saveuser")).permitAll()
 				.anyRequest().authenticated())
-			.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/test", true).permitAll())
+			.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/index", true).permitAll())
 			.logout(logout -> logout.permitAll()).build();
 	}
 

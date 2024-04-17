@@ -4,7 +4,6 @@ import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
-
 import com.backend.project.util.shortUrl;
+import com.backend.project.util.isSignedIn;
 import com.backend.project.domain.Urls;
 import com.backend.project.domain.UrlsRepository;
-
 
 
 @RestController
@@ -40,8 +38,13 @@ public class projectController {
 
 
   @GetMapping("/index")
-    public ModelAndView addUrl() {
-        return new ModelAndView("index");
+    public  ModelAndView addUrl() {
+      boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
+      
+      ModelAndView indexView = new ModelAndView("index");
+      indexView.addObject("isSignedIn", isSingedIn_);
+
+      return indexView;
     }
     
 
@@ -68,22 +71,20 @@ public class projectController {
     } 
 
 
-
-  @GetMapping("/")
+  @GetMapping("/test")
   String test() {
     return "test";
   }
 
-  @GetMapping("/test")
-  String test2() {
-    return "test";
+  @GetMapping("/")
+  RedirectView catch_() {
+    return new RedirectView("http://localhost:8080/index");
   }
 
 
   @GetMapping("/{shorturl}")
   public RedirectView handleCommand(@PathVariable("shorturl") String shorturl,
                               @RequestParam Map<String, String> params) {
-
       System.out.println(shorturl);
       List<Urls> urls = repository.findByShortUrlCode(shorturl);
       if (!urls.isEmpty()) {

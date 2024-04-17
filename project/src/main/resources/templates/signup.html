@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
-    <title>Studentlist login</title>
+    <title>Studentlist Signup</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body, html {
             height: 100%;
@@ -56,30 +57,27 @@
             margin-top: 10px;
             color: #24547b;
             text-decoration: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
 
         a:hover {
             color: #42a5f5;
             text-decoration: underline;
         }
-
         
     </style>
 </head>
 <body>
+<a href="/index"><i class="material-icons" style="color: #42a5f5; font-size: 24px;">arrow_back</i></a>
 <div class="container">
-    <div class="alert alert-danger" th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div class="alert alert-warning" th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post" >
+    <form th:action="@{/signup}" method="post" >
         <div><input type="text" name="username" placeholder="Username" required /></div>
         <div><input type="password" name="password" placeholder="Password" required /></div>
-        <div><input type="submit" value="Sign In"/></div>
+        <div><input type="password" name="confirmPassword" placeholder="Confirm Password" required /></div>
+        <div><input type="submit" value="Sign Up"/></div>
     </form>
-    <a th:href="@{/signup}">Sign-up</a>
 </div>
 </body>
 </html>

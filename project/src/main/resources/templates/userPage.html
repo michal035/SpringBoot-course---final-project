@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
+    <title>Student list login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        
+        #url-input:focus {
+            border-bottom: 1px solid #42a5f5 !important; 
+            box-shadow: 0 1px 0 0 #42a5f5 !important; 
+        }
+        
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #from {
+            width: 50%;
+            height: 80%;
+            justify-self: center;
+            align-self: center;
+            display: flex; 
+            align-items: center; 
+        }
+
+        #head{
+            display: flex;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1%;
+            margin-right: 20px;
+            height: 5%;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div th:if="${isSignedIn}" id="head">
+        <div style="display: flex; flex-direction: row; align-items: center;">
+            <a href="/index"><i class="Medium material-icons" style="margin-right: 5px; color: #42a5f5;">home</i></a>
+            <button class="waves-effect btn blue lighten-1" style="margin-right: 1%; font-size: 70%; border-radius: 17px; background-color: #24547b;" onclick="window.location.href='/logout'">Logout</button>
+        </div>        
+    </div>
+    <div th:unless="${isSignedIn}" id="head">
+        <button class="waves-effect btn blue lighten-1" style="margin-right: 1%; font-size: 70%; border-radius: 17px;" onclick="window.location.href='/login'">Login</button>
+    </div>
+   
+        
+
+    <table>
+        <thead>
+            <tr>
+                <th>Original URL</th>
+                <th>Short URL</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <tr th:each="url : ${list_of_books}">
+                <td th:text="${url.originalUrl}"></td> 
+                <td th:text="${url.shortUrl}"></td> 
+                <td><a th:href="@{/delete/{id}(id=${url.id})}"><i class="material-icons" style="color: #d32f2f ; "onmouseover="this.style.color='#b71c1c';" onmouseout="this.style.color='#d32f2f';">remove_circle</i></a></td>
+                <!-- #b71c1c #d32f2f -->
+            </tr> 
+        </tbody>
+    </table>
+            
+
+    
+</body>
+</html>

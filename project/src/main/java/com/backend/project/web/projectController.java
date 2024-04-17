@@ -19,12 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
-import com.backend.project.util.shortUrl;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.backend.project.util.shortUrl;
 import com.backend.project.util.isSignedIn;
 import com.backend.project.domain.Urls;
 import com.backend.project.domain.User;
@@ -49,11 +48,14 @@ public class projectController {
   @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+
   @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("login");
     }
 
+
+  //landing page 
   @GetMapping("/index")
     public  ModelAndView addUrl() {
       boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
@@ -63,7 +65,9 @@ public class projectController {
 
       return indexView;
     }
-     
+    
+
+    //create new shortened url 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
     public String newUrl(@RequestParam("url") String url, Model model) {
@@ -72,6 +76,7 @@ public class projectController {
       String[] data_shortUrl;
       String domain;
 
+      // custom function returns the short URL
       try {
         data_shortUrl = shortUrl.getShortUrl();
         domain = (url.split("//")[1]).split("/")[0];
@@ -82,7 +87,7 @@ public class projectController {
         Urls newUrl = new Urls(domain,url,data_shortUrl[0],data_shortUrl[1]);
         repository.save(newUrl);
 
-
+        // If user is signed in the created url will be associated with his account 
         boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
         if(isSingedIn_ == true) {
           Long urlId = newUrl.getId();
@@ -95,6 +100,8 @@ public class projectController {
 
     } 
 
+
+    //Page where users can manage their short urls 
     @GetMapping("/user")
     public  ModelAndView userPage() {
       boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
@@ -126,6 +133,7 @@ public class projectController {
       }
     }
 
+
   @GetMapping("/")
   RedirectView catch_() {
     return new RedirectView("/index");
@@ -139,6 +147,8 @@ public class projectController {
       return new RedirectView("/user");
     }
 
+
+  // catching all of the requests to non-existant endpoints and if such shorturl exists redirecting users to their destinations
   @GetMapping("/{shorturl}")
   public RedirectView handleCommand(@PathVariable("shorturl") String shorturl,
                               @RequestParam Map<String, String> params) {
@@ -151,6 +161,7 @@ public class projectController {
         return new RedirectView("/index");
       }
   }
+
 
   @GetMapping("/logout")
     public RedirectView logout(HttpServletRequest request, HttpServletResponse response) {
@@ -172,20 +183,20 @@ public class projectController {
     }
 
 
-
     @PostMapping("/signup")
     public RedirectView signup(@RequestParam String username, @RequestParam String password) {
      
       // There should be a check if user exists 
       User newUser = new User();
       newUser.setUsername(username);
-      
+
       newUser.setPassword(passwordEncoder.encode(password));
       newUser.setRole("user");
       userRepository.save(newUser);
 
       return new RedirectView("/login");                                                   
     }
+
 
     @GetMapping("/signup")
     public  ModelAndView signup() {

@@ -26,7 +26,7 @@
 
         #from {
             width: 50%;
-            height: 80%;
+            height: 70%;
             justify-self: center;
             align-self: center;
             display: flex; 
@@ -41,6 +41,17 @@
             margin-top: 1%;
             margin-right: 20px;
             height: 5%;
+        }
+
+        #newUrl{
+            /* height: 25%; */
+            display: flex;
+            justify-self: center;
+            align-self: center;
+            display: flex; 
+            margin-top: 0%;
+            /* align-items: center;  */
+            /* margin-bottom: 5%; */
         }
         
     </style>
@@ -63,6 +74,10 @@
             <br><br>
             <center><button type="submit" class="waves-effect btn blue lighten-1"><b>Get short url</b></button></center>
         </form>
+    </div>
+
+    <div th:if="${newUrl != null}" id="newUrl">
+        <p>Short URL: <span th:text="${newUrl}"></span></p>
     </div>
 
     

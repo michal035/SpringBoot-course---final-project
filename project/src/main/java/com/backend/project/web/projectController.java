@@ -70,7 +70,7 @@ public class projectController {
     //create new shortened url 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
-    public String newUrl(@RequestParam("url") String url, Model model) {
+    public ModelAndView newUrl(@RequestParam("url") String url, Model model) {
       model.addAttribute("url", url);
       
       String[] data_shortUrl;
@@ -81,7 +81,8 @@ public class projectController {
         data_shortUrl = shortUrl.getShortUrl();
         domain = (url.split("//")[1]).split("/")[0];
       }catch(Exception e){
-        return "Please provide full url";
+        //return "Please provide full url";  // There would need to be page for this 
+        return new ModelAndView("index");
       }
         
         Urls newUrl = new Urls(domain,url,data_shortUrl[0],data_shortUrl[1]);
@@ -96,7 +97,13 @@ public class projectController {
           userUrlsRepository.save(new UsersUrls(userId,urlId));
         }
 
-        return data_shortUrl[0];
+
+        ModelAndView indexView = new ModelAndView("index");
+        indexView.addObject("isSignedIn", isSingedIn_);
+        indexView.addObject("newUrl", data_shortUrl[0]);
+  
+        return indexView;
+        //return data_shortUrl[0];
 
     } 
 
@@ -148,7 +155,7 @@ public class projectController {
     }
 
 
-  // catching all of the requests to non-existant endpoints and if such shorturl exists redirecting users to their destinations
+  // catching all of the requests to non-existent endpoints and if such shorturl exists redirecting users to their destinations
   @GetMapping("/{shorturl}")
   public RedirectView handleCommand(@PathVariable("shorturl") String shorturl,
                               @RequestParam Map<String, String> params) {

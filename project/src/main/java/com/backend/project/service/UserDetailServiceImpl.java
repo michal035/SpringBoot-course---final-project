@@ -35,7 +35,7 @@ public class UserDetailServiceImpl implements UserDetailsService  {
     	}
     	else {
 	    	builder = org.springframework.security.core.userdetails.User.withUsername(username);
-	    	builder.password(curruser.getPasswordHash());
+	    	builder.password(curruser.getPassword());
 	    	builder.roles(curruser.getRole()); 
     	}
     	

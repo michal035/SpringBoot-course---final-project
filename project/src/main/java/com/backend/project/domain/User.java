@@ -9,23 +9,28 @@ public class User {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    // Username with unique constraint
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
-    private String passwordHash;
+    private String password;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = true)
     private String role;
 
     public User() {
     }
     
-	public User(String username, String passwordHash, String role) {
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
+
+	public User(String username, String password, String role) {
 		super();
 		this.username = username;
-		this.passwordHash = passwordHash;
+		this.password = password;
 		this.role = role;
 	}
 
@@ -45,12 +50,12 @@ public class User {
 		this.username = username;
 	}
 
-	public String getPasswordHash() {
-		return passwordHash;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getRole() {

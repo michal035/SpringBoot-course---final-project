@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
+    <title>Studentlist Signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 50%;
+            height: 80%;
+            margin: auto;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; 
+        }
+
+        input:focus {
+            border-bottom: 1px solid #42a5f5 !important; 
+            box-shadow: 0 1px 0 0 #42a5f5 !important; 
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #42a5f5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #42a5f5;
+        }
+
+        a {
+            margin-top: 10px;
+            color: #24547b;
+            text-decoration: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        a:hover {
+            color: #42a5f5;
+            text-decoration: underline;
+        }
+        
+    </style>
+</head>
+<body>
+<a href="/index"><i class="material-icons" style="color: #42a5f5; font-size: 24px;">arrow_back</i></a>
+<div class="container">
+    <form th:action="@{/signup}" method="post" >
+        <div><input type="text" name="username" placeholder="Username" required /></div>
+        <div><input type="password" name="password" placeholder="Password" required /></div>
+        <div><input type="password" name="confirmPassword" placeholder="Confirm Password" required /></div>
+        <div><input type="submit" value="Sign Up"/></div>
+    </form>
+</div>
+</body>
+</html>

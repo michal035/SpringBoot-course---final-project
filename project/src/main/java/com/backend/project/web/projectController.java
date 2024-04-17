@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import com.backend.project.util.isSignedIn;
 import com.backend.project.domain.Urls;
+import com.backend.project.domain.User;
 import com.backend.project.domain.UrlsRepository;
 import com.backend.project.domain.UserRepository;
 import com.backend.project.domain.UsersUrls;
@@ -44,6 +46,8 @@ public class projectController {
   @Autowired
   private UsersUrlsRepository userUrlsRepository;
 
+  @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
   @GetMapping("/login")
     public ModelAndView login() {
@@ -62,7 +66,7 @@ public class projectController {
      
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
-    public String newBook(@RequestParam("url") String url, Model model) {
+    public String newUrl(@RequestParam("url") String url, Model model) {
       model.addAttribute("url", url);
       
       String[] data_shortUrl;
@@ -165,6 +169,28 @@ public class projectController {
         }
 
         return new RedirectView("/index"); 
+    }
+
+
+
+    @PostMapping("/signup")
+    public RedirectView signup(@RequestParam String username, @RequestParam String password) {
+     
+      // There should be a check if user exists 
+      User newUser = new User();
+      newUser.setUsername(username);
+      
+      newUser.setPassword(passwordEncoder.encode(password));
+      newUser.setRole("user");
+      userRepository.save(newUser);
+
+      return new RedirectView("/login");                                                   
+    }
+
+    @GetMapping("/signup")
+    public  ModelAndView signup() {
+      ModelAndView indexView = new ModelAndView("signup");
+      return indexView;
     }
 }
 

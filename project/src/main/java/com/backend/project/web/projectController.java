@@ -3,6 +3,7 @@ package com.backend.project.web;
 import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,11 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 import com.backend.project.util.shortUrl;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.backend.project.util.isSignedIn;
 import com.backend.project.domain.Urls;
 import com.backend.project.domain.UrlsRepository;
@@ -28,7 +34,6 @@ import com.backend.project.domain.UsersUrlsRepository;
 
 @RestController
 public class projectController {
-
 
   @Autowired
   private UrlsRepository repository;
@@ -45,7 +50,6 @@ public class projectController {
         return new ModelAndView("login");
     }
 
-
   @GetMapping("/index")
     public  ModelAndView addUrl() {
       boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
@@ -55,8 +59,7 @@ public class projectController {
 
       return indexView;
     }
-    
-
+     
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
     public String newBook(@RequestParam("url") String url, Model model) {
@@ -92,10 +95,31 @@ public class projectController {
     public  ModelAndView userPage() {
       boolean isSingedIn_ = isSignedIn.isUserLoggedIn();
       
-      ModelAndView userView = new ModelAndView("userPage");
-      userView.addObject("isSignedIn", isSingedIn_);
+      if(isSingedIn_ == true){
 
-      return userView;
+        long userId = userRepository.findByUsername(isSignedIn.getCurrentUsername()).getId();
+        List<UsersUrls> userUrlsList = userUrlsRepository.findByUserId(userId);
+
+        List<Long> urlIds = userUrlsList.stream()
+                                .map(UsersUrls::getUrlId)
+                                .collect(Collectors.toList());
+        Iterable<Urls> urls = repository.findByIdIn(urlIds);
+        
+
+        ModelAndView userView = new ModelAndView("userPage");
+        userView.addObject("list_of_books", urls);
+        userView.addObject("isSignedIn", isSingedIn_);
+        
+        return userView;
+
+      }else{
+
+        // for now - need to add a fail screen
+        ModelAndView userView = new ModelAndView("userPage");
+        userView.addObject("isSignedIn", isSingedIn_);
+  
+        return userView;
+      }
     }
 
   @GetMapping("/")
@@ -103,6 +127,13 @@ public class projectController {
     return new RedirectView("/index");
   }
  
+
+  @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public RedirectView deleteStudent(@PathVariable("id") Long id, Model model) {
+    	repository.deleteById(id);
+
+      return new RedirectView("/user");
+    }
 
   @GetMapping("/{shorturl}")
   public RedirectView handleCommand(@PathVariable("shorturl") String shorturl,
@@ -116,6 +147,25 @@ public class projectController {
         return new RedirectView("/index");
       }
   }
+
+  @GetMapping("/logout")
+    public RedirectView logout(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate();
+        
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("JSESSIONID")) {
+                    cookie.setMaxAge(0);
+                    cookie.setPath(request.getContextPath()); 
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+
+        return new RedirectView("/index"); 
+    }
 }
 
 

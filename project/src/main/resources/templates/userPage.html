@@ -49,7 +49,7 @@
 
     <div th:if="${isSignedIn}" id="head">
         <div style="display: flex; flex-direction: row; align-items: center;">
-            <a href="/user"><i class="Medium material-icons" style="margin-right: 5px; color: #24547b;">create</i></a>
+            <a href="/index"><i class="Medium material-icons" style="margin-right: 5px; color: #42a5f5;">home</i></a>
             <button class="waves-effect btn blue lighten-1" style="margin-right: 1%; font-size: 70%; border-radius: 17px; background-color: #24547b;" onclick="window.location.href='/logout'">Logout</button>
         </div>        
     </div>
@@ -57,13 +57,26 @@
         <button class="waves-effect btn blue lighten-1" style="margin-right: 1%; font-size: 70%; border-radius: 17px;" onclick="window.location.href='/login'">Login</button>
     </div>
    
-    <div id="from">
-        <form th:action="@{/new}" method="post" style="width: 100%;">
-            <input placeholder="Enter full link" type="text" id="url-input" name="url" required style="width: 100%;">
-            <br><br>
-            <center><button type="submit" class="waves-effect btn blue lighten-1"><b>Get short url</b></button></center>
-        </form>
-    </div>
+        
+
+    <table>
+        <thead>
+            <tr>
+                <th>Original URL</th>
+                <th>Short URL</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <tr th:each="url : ${list_of_books}">
+                <td th:text="${url.originalUrl}"></td> 
+                <td th:text="${url.shortUrl}"></td> 
+                <td><a th:href="@{/delete/{id}(id=${url.id})}"><i class="material-icons" style="color: #d32f2f ; "onmouseover="this.style.color='#b71c1c';" onmouseout="this.style.color='#d32f2f';">remove_circle</i></a></td>
+                <!-- #b71c1c #d32f2f -->
+            </tr> 
+        </tbody>
+    </table>
+            
 
     
 </body>

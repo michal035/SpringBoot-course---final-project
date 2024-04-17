@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UrlsRepository extends CrudRepository<Urls, Long>{
     List<Urls> findByShortUrlCode(String originalUrl);
+    Iterable<Urls> findByIdIn(List<Long> urlIds);
 }

@@ -17,6 +17,7 @@ public class UsersUrls {
 
     private long urlId;
 
+    public UsersUrls(){}
 
     public UsersUrls(long userId, long urlId) {
         this.userId = userId;

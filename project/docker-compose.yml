@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  spring-app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./application.properties:/app/application.properties
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb:3306/db_name
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_name

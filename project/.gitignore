@@ -1,9 +1,9 @@
 HELP.md
-target/
+target/*/
+project-0.0.1-SNAPSHOT.jar.original
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
 ### STS ###
 .apt_generated
 .classpath
@@ -37,4 +37,4 @@ build/
 project/src/main/resources/application.properties
 /home/michal/Documents/final_backend/project/src/main/resources/application.properties
 
-*properties
+src/main/resources/application.properties

@@ -12,7 +12,7 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .container {
             width: 50%;
             height: 80%;
@@ -21,6 +21,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center; 
+            justify-content: center; 
+            align-items: center;
         }
 
         input:focus {
@@ -64,22 +66,30 @@
         }
 
         
+
+        #newurl {
+            width: 100%;
+            text-align: center; 
+            margin-top: 10px; 
+        }
+        
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="alert alert-danger" th:if="${param.error}">
-        Invalid username and password.
+    <div class="container">
+        <div class="alert alert-warning" th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <form th:action="@{/login}" method="post" >
+            <div><input type="text" name="username" placeholder="Username" required /></div>
+            <div><input type="password" name="password" placeholder="Password" required /></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>
+        <a th:href="@{/signup}">Sign-up</a>
+        <div class="alert alert-danger" id="newurl" th:if="${param.error}">
+            <p>Invalid username and password</p>
+        </div>
     </div>
-    <div class="alert alert-warning" th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post" >
-        <div><input type="text" name="username" placeholder="Username" required /></div>
-        <div><input type="password" name="password" placeholder="Password" required /></div>
-        <div><input type="submit" value="Sign In"/></div>
-    </form>
-    <a th:href="@{/signup}">Sign-up</a>
-</div>
+    <div style="height: 10%;"></div>
 </body>
 </html>
